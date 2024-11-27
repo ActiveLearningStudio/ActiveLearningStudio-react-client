@@ -361,66 +361,72 @@ const DropDownEdit = ({
                     </ul>
                   </li>
                 )}
-                <li className="dropdown-submenu send">
-                  <a tabIndex="-1">
-                    <ExportSmSvg
-                      primaryColor={primaryColor}
-                      className="mr-2"
-                    />
-                    Export
-                  </a>
-                  <div className="faAngleRight-dropdown">
-                    <RightAngleSmSvg primaryColor={primaryColor} />
-                  </div>
+                {permission?.Activity?.includes(
+                  "activity:view-export-xapi-option",
+                ) ||
+                permission?.["Independent Activity"]?.includes(
+                  "independent-activity:view-export-h5p-option",
+                ) ? (
+                  <li className="dropdown-submenu send">
+                    <a tabIndex="-1">
+                      <ExportSmSvg
+                        primaryColor={primaryColor}
+                        className="mr-2"
+                      />
+                      Export
+                    </a>
+                    <div className="faAngleRight-dropdown">
+                      <RightAngleSmSvg primaryColor={primaryColor} />
+                    </div>
 
-                  <ul className="dropdown-menu check">
-                    {permission?.Activity?.includes(
-                      "activity:view-export-xapi-option",
-                    ) && (
-                      <li>
-                        <a
-                          target="_blank"
+                    <ul className="dropdown-menu check">
+                      {permission?.Activity?.includes(
+                        "activity:view-export-xapi-option",
+                      ) && (
+                        <li>
+                          <a
+                            target="_blank"
+                            onClick={() => {
+                              dispatch(shareEnableLink(data.id));
+                            }}
+                            href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/independent_activity/getxapifile/${data.id}`}
+                          >
+                            xAPI Format
+                          </a>
+                        </li>
+                      )}
+                      {permission?.["Independent Activity"]?.includes(
+                        "independent-activity:view-export-h5p-option",
+                      ) && (
+                        <li
                           onClick={() => {
-                            dispatch(shareEnableLink(data.id));
-                          }}
-                          href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/independent_activity/getxapifile/${data.id}`}
-                        >
-                          xAPI Format
-                        </a>
-                      </li>
-                    )}
-                    {permission?.["Independent Activity"]?.includes(
-                      "independent-activity:view-export-h5p-option",
-                    ) && (
-                      <li
-                        onClick={() => {
-                          Swal.fire({
-                            title: "Please Wait !",
-                            html: "Exporting Activity   ...",
-                            allowOutsideClick: false,
-                            onBeforeOpen: () => {
-                              Swal.showLoading();
-                            },
-                          });
-                          const result = indActivityService.exportIndAvtivity(
-                            activeOrganization.id,
-                            data.id,
-                          );
-                          result.then((data) => {
-                            // console.log(data)
                             Swal.fire({
-                              icon: "success",
-                              html: data?.message,
+                              title: "Please Wait !",
+                              html: "Exporting Activity   ...",
+                              allowOutsideClick: false,
+                              onBeforeOpen: () => {
+                                Swal.showLoading();
+                              },
                             });
-                          });
-                        }}
-                      >
-                        <a>H5P Format</a>
-                      </li>
-                    )}
-                  </ul>
-                </li>
-
+                            const result = indActivityService.exportIndAvtivity(
+                              activeOrganization.id,
+                              data.id,
+                            );
+                            result.then((data) => {
+                              // console.log(data)
+                              Swal.fire({
+                                icon: "success",
+                                html: data?.message,
+                              });
+                            });
+                          }}
+                        >
+                          <a>H5P Format</a>
+                        </li>
+                      )}
+                    </ul>
+                  </li>
+                ) : null}
                 {/*  */}
                 {/* <Dropdown.Item className onClick={() => {}}>
                 <div className="dropdown-right-angle">
